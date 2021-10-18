@@ -1,6 +1,6 @@
 package com.example.httpinfo;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 
 import java.io.IOException;

@@ -1,10 +1,10 @@
 package com.example.httpinfo;
 
-import android.support.v4.widget.ContentLoadingProgressBar;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.widget.ContentLoadingProgressBar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
@@ -14,12 +14,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import fairy.easy.httpmodel.HttpModelHelper;
-import fairy.easy.httpmodel.model.HttpModel;
-import fairy.easy.httpmodel.model.HttpNormalUrlLoader;
 import fairy.easy.httpmodel.resource.HttpListener;
 import fairy.easy.httpmodel.resource.HttpType;
-
-import static com.example.httpinfo.MainActivity.HTTP_ADDRESS;
 
 public class ResultActivity extends AppCompatActivity {
 
