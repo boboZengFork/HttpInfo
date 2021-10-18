@@ -1,1 +1,2 @@
 include ':app', ':httpmodel'
+include ':networkTools'

@@ -11,8 +11,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 30
-        versionCode 105
-        versionName "1.0.5"
+        versionCode 1
+        versionName "1.0.0"
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
@@ -31,6 +31,7 @@ android {
 }
 
 dependencies {
+    implementation project(':networkTools')
 //    compileOnly 'com.android.support:appcompat-v7:28.0.0'
 //    testImplementation 'junit:junit:4.12'
 //    androidTestImplementation 'com.android.support.test:runner:1.0.2'
