@@ -47,9 +47,10 @@ public class Http {
 
 
     public HttpBean getHttpInfo() {
-        httpBean.setAddress(address);
+        String path =address+"/actuator/health";
+        httpBean.setAddress(path);
         try {
-            loadDataWithRedirects(new URL(address), null);
+            loadDataWithRedirects(new URL(path), null);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -152,6 +153,7 @@ public class Http {
         }
         HttpLog.i("http size " + stringBuilder.toString().getBytes().length / 1024.0 + "KB");
         httpBean.setSize(stringBuilder.toString().getBytes().length / 1024.0);
+        httpBean.setResponseBody(stringBuilder.toString());
 
     }
 

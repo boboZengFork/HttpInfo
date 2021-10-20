@@ -19,8 +19,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 
 import fairy.easy.httpmodel.util.HttpLog;

@@ -25,8 +25,17 @@ public class HttpBean extends BaseBean {
     private boolean isJump;
     private List<Map<Object, String>> header;
     private int error;
+    private String responseBody;
 
     public HttpBean() {
+    }
+
+    public String getResponseBody() {
+        return responseBody;
+    }
+
+    public void setResponseBody(String responseBody) {
+        this.responseBody = responseBody;
     }
 
     public int getTime() {
@@ -127,6 +136,7 @@ public class HttpBean extends BaseBean {
             jsonObject.put(isChina() ? HttpData.TOTALTIME_CN : HttpData.TOTALTIME, totalTime + "ms");
             jsonObject.put(isChina() ? HttpData.SPEED_CN : HttpData.SPEED, speed + "kbps");
             jsonObject.put(isChina() ? HttpData.RESPONSECODE_CN : HttpData.RESPONSECODE, responseCode);
+            jsonObject.put(isChina() ? HttpData.RESPONSEBODY_CN : HttpData.RESPONSEBODY, responseBody);
             jsonObject.put(isChina() ? HttpData.SIZE_CN : HttpData.SIZE, String.format("%.1fKB", new BigDecimal(size)));
             jsonObject.put(isChina() ? HttpData.HEADER_SERVER_CN : HttpData.HEADER_SERVER, headerServer);
             jsonObject.put(isChina() ? HttpData.CHECK_HEADER_SERVER_CN : HttpData.CHECK_HEADER_SERVER, checkHeaderServer);
@@ -161,5 +171,7 @@ public class HttpBean extends BaseBean {
         public static final String ISJUMP_CN = "跳转";
         public static final String HEADER = "header";
         public static final String HEADER_CN = "返回header";
+        public static final String RESPONSEBODY = "responseBody";
+        public static final String RESPONSEBODY_CN = "返回数据";
     }
 }
