@@ -41,7 +41,9 @@ public class Input {
         if (totalJson == null) {
             totalJson = new JSONObject();
         }
-        index++;
+        if (!totalJson.has(httpType.getName())) {
+            index++;
+        }
         try {
             totalJson.put(httpType.getName(), result);
         } catch (JSONException e) {
@@ -49,7 +51,7 @@ public class Input {
         }
         if (index == HttpModelHelper.getInstance().getHttpTypeSize()) {
             try {
-                totalJson.put(ALL_TIME, LogTime.getElapsedMillis(HttpModelHelper.getInstance().getInitTime())+ "ms");
+                totalJson.put(ALL_TIME, LogTime.getElapsedMillis(HttpModelHelper.getInstance().getInitTime()) + "ms");
             } catch (JSONException e) {
                 e.printStackTrace();
             }

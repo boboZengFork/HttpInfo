@@ -17,6 +17,37 @@ public class ResultAdapter extends BaseRecyclerAdapter<ResultBean> {
     }
 
     @Override
+    public void insertData(ResultBean item) {
+        boolean flag = true;
+        for (ResultBean bean : list) {
+            if (bean.getTitle().equals(item.getTitle())) {
+                flag = false;
+                bean.setParam(item.getParam());
+                break;
+            }
+        }
+        if (flag) {
+            list.add(list.size(), item);
+            notifyItemInserted(list.size());
+        } else {
+            notifyDataSetChanged();
+        }
+
+    }
+
+    @Override
+    public void insertData(ResultBean item, int position) {
+        for (ResultBean bean : list) {
+            if (bean.getTitle().equals(item.getTitle())) {
+                list.remove(bean);
+                break;
+            }
+        }
+        list.add(position, item);
+        notifyItemInserted(position);
+    }
+
+    @Override
     public void convert(BaseRecyclerHolder baseRecyclerHolder, ResultBean item, int position) {
         baseRecyclerHolder.setText(R.id.item_activity_result_rv_tv, item.getTitle());
         baseRecyclerHolder.setText(R.id.item_activity_result_rv_tv_param, formatString(item.getParam().toString()));

@@ -3,15 +3,27 @@ package com.example.httpinfo;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+
+import fairy.easy.httpmodel.util.HttpLog;
 
 public class MainActivity extends AppCompatActivity {
     public static final String HTTP_ADDRESS = "http";
@@ -37,6 +49,29 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.main_activity_start_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean isACCESS_NETWORK_STATE = ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_NETWORK_STATE)
+                        != PackageManager.PERMISSION_GRANTED;
+                boolean isREAD_PHONE_STATE = ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_PHONE_STATE)
+                        != PackageManager.PERMISSION_GRANTED;
+                if (isACCESS_NETWORK_STATE && isREAD_PHONE_STATE) {
+                    ActivityCompat.requestPermissions(MainActivity.this,
+                            new String[]{Manifest.permission.ACCESS_NETWORK_STATE,
+                                    Manifest.permission.READ_PHONE_STATE}, 1);
+                    return;
+                } else if (isACCESS_NETWORK_STATE) {
+                    ActivityCompat.requestPermissions(MainActivity.this,
+                            new String[]{Manifest.permission.ACCESS_NETWORK_STATE}, 1);
+                    return;
+                } else if (isREAD_PHONE_STATE) {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.READ_PHONE_STATE)) {
+                        ActivityCompat.requestPermissions(MainActivity.this,
+                                new String[]{Manifest.permission.READ_PHONE_STATE}, 1);
+                    } else {
+                        goToSettings();
+                    }
+
+                    return;
+                }
                 if (TextUtils.isEmpty(etInput.getText().toString())) {
                     Toast.makeText(getApplicationContext(), "Input Address is wrong", Toast.LENGTH_SHORT).show();
                     return;
@@ -47,6 +82,31 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void goToSettings() {
+        Intent myAppSettings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                Uri.parse("package:" + getPackageName()));
+        myAppSettings.addCategory(Intent.CATEGORY_DEFAULT);
+        myAppSettings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivityForResult(myAppSettings, 2);
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                HttpLog.i("imei", "permission is granted after requested！");
+            } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                HttpLog.i("imei", "permission is not granted after requested！");
+                //这里表示申请权限后被用户拒绝了
+
+            } else {
+                HttpLog.i("imei", "permission is not granted after requested！");
+            }
+        }
     }
 
 }

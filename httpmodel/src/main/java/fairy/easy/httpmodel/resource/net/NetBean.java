@@ -176,7 +176,7 @@ public class NetBean extends BaseBean {
     }
 
     @Override
-    protected JSONObject toJSONObject() {
+    public JSONObject toJSONObject() {
         try {
             jsonObject.put(isChina() ? NetData.NETWORK_AVAILABLE_CN : NetData.NETWORK_AVAILABLE, isNetworkAvailable);
             jsonObject.put(isChina() ? NetData.NETWORK_TYPE_CN : NetData.NETWORK_TYPE, netWorkType);

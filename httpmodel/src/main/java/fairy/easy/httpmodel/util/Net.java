@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
+import android.net.Network;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -30,6 +31,8 @@ import fairy.easy.httpmodel.HttpModelHelper;
 import fairy.easy.httpmodel.model.HttpModel;
 import fairy.easy.httpmodel.model.ModelLoader;
 import fairy.easy.httpmodel.model.RequestMethod;
+import fairy.easy.httpmodel.resource.HttpType;
+import fairy.easy.httpmodel.resource.Input;
 import fairy.easy.httpmodel.resource.base.BaseData;
 import fairy.easy.httpmodel.resource.net.NetBean;
 
@@ -226,12 +229,14 @@ public class Net {
         modelLoader.loadData(new ModelLoader.DataCallback<String>() {
             @Override
             public void onDataReady( String data) {
+                //<html><head><title>网易DNS检测工具</title></head><body><iframe src='https://only-82512-58-247-93-26.nstool.haowu.link/' frameborder=0 scrolling=no height='100%' width='100%'></iframe></body></html>
                 HttpLog.i("outputDns html info success:" + data);
                 String url = data.substring(data.indexOf("src=") + 4, data.lastIndexOf("frameborder")).replaceAll("'", "").replaceAll(" ", "");
                 modelLoader.setHttpModel(new HttpModel(url, RequestMethod.GET, null));
                 modelLoader.loadData(new ModelLoader.DataCallback<String>() {
                     @Override
                     public void onDataReady( String data) {
+                        //您好，尊敬的网易用户<br>您的IP地址信息: 58.247.93.26 上海市上海市联通<br>您的DNS地址信息: 74.125.41.7 台北市<br>您的DNS设置可能存在问题，请联系您的ISP服务商
                         HttpLog.i("outputDns info success:" + data);
                         String dataIp = data.substring(data.indexOf("您的IP地址信息") + 10);
                         String dataAddress = dataIp.substring(0, dataIp.indexOf("<br>"));
@@ -245,6 +250,7 @@ public class Net {
                         netBean.setOutputDns(outputDns[0]);
                         netBean.setOutputDnsCountry(outputDns[1]);
 
+                        Input.onSuccess(HttpType.NET, netBean.toJSONObject());
 
                     }
 
