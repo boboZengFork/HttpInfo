@@ -3,14 +3,7 @@ package com.example.httpinfo;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -19,9 +12,19 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.List;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import com.yh.network.tools.utils.Net;
+import com.yh.network.tools.utils.Proxy;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+import fairy.easy.httpmodel.resource.ping.PingBean;
 import fairy.easy.httpmodel.util.HttpLog;
+import fairy.easy.httpmodel.util.Ping;
 
 public class MainActivity extends AppCompatActivity {
     public static final String HTTP_ADDRESS = "http";
@@ -43,6 +46,32 @@ public class MainActivity extends AppCompatActivity {
 
         etInput = findViewById(R.id.main_activity_et_input);
         radioButton = findViewById(R.id.main_activity_start_rb);
+
+        findViewById(R.id.btn1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean networkAvailable = Net.INSTANCE.isNetworkAvailable(MainActivity.this);
+                Toast.makeText(MainActivity.this, "网络状态：" + networkAvailable
+                                + "hasProxy：" + Proxy.INSTANCE.hasProxy(MainActivity.this)
+                                + "proxyHost：" + Proxy.INSTANCE.proxyHost(MainActivity.this)
+                                + "proxyPort：" + Proxy.INSTANCE.proxyPort(MainActivity.this)
+                        , Toast.LENGTH_SHORT
+                ).show();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            InetAddress inetAddress = InetAddress.getByName(etInput.getText().toString());
+                            Ping ping = new Ping(etInput.getText().toString());
+                            PingBean pingBean = ping.getPingInfo();
+                        } catch (UnknownHostException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+
+            }
+        });
 
         findViewById(R.id.main_activity_start_btn).setOnClickListener(new View.OnClickListener() {
             @Override
