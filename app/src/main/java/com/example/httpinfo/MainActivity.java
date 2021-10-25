@@ -16,15 +16,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.yh.network.tools.utils.Net;
-import com.yh.network.tools.utils.Proxy;
+import com.yh.network.tools.DiagnoseProxy;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
-import fairy.easy.httpmodel.resource.ping.PingBean;
 import fairy.easy.httpmodel.util.HttpLog;
-import fairy.easy.httpmodel.util.Ping;
 
 public class MainActivity extends AppCompatActivity {
     public static final String HTTP_ADDRESS = "http";
@@ -50,26 +44,10 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean networkAvailable = Net.INSTANCE.isNetworkAvailable(MainActivity.this);
-                Toast.makeText(MainActivity.this, "网络状态：" + networkAvailable
-                                + "hasProxy：" + Proxy.INSTANCE.hasProxy(MainActivity.this)
-                                + "proxyHost：" + Proxy.INSTANCE.proxyHost(MainActivity.this)
-                                + "proxyPort：" + Proxy.INSTANCE.proxyPort(MainActivity.this)
-                        , Toast.LENGTH_SHORT
-                ).show();
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            InetAddress inetAddress = InetAddress.getByName(etInput.getText().toString());
-                            Ping ping = new Ping(etInput.getText().toString());
-                            PingBean pingBean = ping.getPingInfo();
-                        } catch (UnknownHostException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
-
+                Intent intent = new Intent(getApplicationContext(), DiagnoseActivity.class);
+                intent.putExtra(HTTP_ADDRESS, etInput.getText().toString());
+                intent.putExtra(HTTP_RB, radioButton.isChecked());
+                startActivity(intent);
             }
         });
 

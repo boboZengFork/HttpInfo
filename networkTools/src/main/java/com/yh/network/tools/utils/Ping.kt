@@ -1,5 +1,6 @@
 package com.yh.network.tools.utils
 
+import com.yh.network.tools.bean.PingBean
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
@@ -22,7 +23,7 @@ object Ping {
         return String.format("/system/bin/ping $formatStr", arrayParams)
     }
 
-    fun createSimplePingCommand(count: Int, timeout: Int, domain: String): String? {
+    fun createSimplePingCommand(count: Int, timeout: Int, domain: String): String {
         val arrayOfObject = arrayOfNulls<Any>(3)
         arrayOfObject[0] = count
         arrayOfObject[1] = timeout
@@ -105,11 +106,37 @@ object Ping {
         return null
     }
 
-    /**
-     *   10 packets transmitted, 10 received, 0% packet loss, time 9013ms
-     */
-    fun parseLossFromPing(paramString: String): Map<String, Any> {
-        var map = hashMapOf<String, Any>()
+    fun parseDelayFromPing(paramString: String, pingBean: PingBean) {
+        try {
+            if (paramString.contains("rtt")) {
+                val str = paramString.substring(paramString.indexOf("rtt"))
+                val arrayOfString =
+                    str.substring(2 + str.indexOf("=")).split("/".toRegex()).toTypedArray()
+                pingBean.rttMin = arrayOfString[0].toFloat()
+                pingBean.rttAvg = arrayOfString[1].toFloat()
+                pingBean.rttMax = arrayOfString[2].toFloat()
+                pingBean.rttMDev = arrayOfString[3].substring(0, arrayOfString[3].indexOf(" ms")).toFloat()
+            }
+        } catch (localException: java.lang.Exception) {
+            localException.printStackTrace()
+        }
+    }
+
+    fun parseTtlFromPing(paramString: String, pingBean: PingBean) {
+        try {
+            if (paramString.contains("ttl")) {
+                val str1 = paramString.substring(
+                    paramString.indexOf("ttl"),
+                    paramString.indexOf("\n", paramString.indexOf("ttl"))
+                )
+                pingBean.ttl = str1.substring(4, str1.indexOf(" ")).toInt()
+            }
+        } catch (localException: java.lang.Exception) {
+            localException.printStackTrace()
+        }
+    }
+
+    fun parseLossFromPing(paramString: String, pingBean: PingBean) {
         try {
             if (paramString.contains("statistics")) {
                 val str1 = paramString.substring(
@@ -118,41 +145,37 @@ object Ping {
                         paramString.indexOf("statistics")
                     )
                 )
-                val arrayOfString = str1.substring(0, str1.indexOf("\n")).split(", ").toTypedArray()
+                val arrayOfString =
+                    str1.substring(0, str1.indexOf("\n")).split(", ".toRegex()).toTypedArray()
                 for (str in arrayOfString) {
                     if (str.contains(" packets transmitted")) {
-                        map.put(
-                            "transmitted",
-                            str.substring(
-                                0,
-                                str.indexOf(" packets transmitted")
-                            ).toInt()
-                        )
+                        pingBean.transmitted = str.substring(
+                            0,
+                            str.indexOf(" packets transmitted")
+                        ).toInt()
                     }
                     if (str.contains(" received")) {
-                        map.put("received", str.substring(0, str.indexOf(" received")).toInt())
+                        pingBean.receive = str.substring(0, str.indexOf(" received")).toInt()
                     }
                     if (str.contains(" errors")) {
-                        map.put("errors", str.substring(0, str.indexOf(" errors")).toInt())
+                        pingBean.error = str.substring(0, str.indexOf(" errors")).toInt()
                     }
                     if (str.contains(" packet loss")) {
-                        map.put("loss", str.substring(0, str.indexOf("%")).toFloat())
+                        pingBean.lossRate = str.substring(0, str.indexOf("%")).toFloat()
                     }
                     if (str.contains("time")) {
-                        map.put(
-                            "time",
-                            str.substring(
-                                str.lastIndexOf("e") + 2,
-                                str.indexOf("ms")
-                            ).toInt()
-                        )
+                        pingBean.allTime = str.substring(
+                            str.lastIndexOf("e") + 2,
+                            str.indexOf("ms")
+                        ).toInt()
                     }
                 }
             }
         } catch (localException: java.lang.Exception) {
             localException.printStackTrace()
         }
-
-        return map
     }
+
+
+
 }

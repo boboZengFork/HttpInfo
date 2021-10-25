@@ -1,8 +1,11 @@
 package com.yh.network.tools.utils
 
+import android.content.Context
 import android.text.TextUtils
 import java.io.InputStream
 import java.net.HttpURLConnection
+import java.net.InetSocketAddress
+import java.net.SocketAddress
 import java.net.URL
 
 /**
@@ -25,11 +28,30 @@ object Http {
     /**
      * 验证是否可以访问服务器（/actuator/health）
      */
-    fun loadHostActuatorHealth(host: String): Boolean {
+    fun loadHostActuatorHealth(context: Context?, host: String): Boolean {
+        return loadDataWithRedirects(context, URL("http://$host$ACTUATOR_HEALTH"))
+    }
+
+    fun loadDataWithRedirects(context: Context?, url: URL?): Boolean {
+        if (context == null || url == null) {
+            return false
+        }
         var urlConnection: HttpURLConnection? = null
         try {
-            var url = URL(host + ACTUATOR_HEALTH)
-            urlConnection = url.openConnection() as HttpURLConnection
+            //当我们使用的是中国移动的手机网络时，下面方法可以直接获取得到10.0.0.172，80端口
+            //通过andorid.net.Proxy可以获取默认的代理地址
+            val host: String? = Proxy.proxyHost(context)
+            //通过andorid.net.Proxy可以获取默认的代理端口
+            val port: Int = Proxy.proxyPort(context)
+            urlConnection = if (TextUtils.isEmpty(host) || port == -1) {
+                url.openConnection() as HttpURLConnection
+            } else {
+                val sa: SocketAddress = InetSocketAddress(host, port)
+                //定义代理，此处的Proxy是源自java.net
+                val proxy = java.net.Proxy(java.net.Proxy.Type.HTTP, sa)
+                //设置代理
+                url.openConnection(proxy) as HttpURLConnection
+            }
             urlConnection.doInput = true
             urlConnection.useCaches = false
             urlConnection.requestMethod = "GET"
@@ -40,9 +62,26 @@ object Http {
             val statusCode = urlConnection.responseCode
             if (isHttpOk(statusCode)) {
                 var responseBody = getStreamForSuccessfulRequest(urlConnection, true)
-                if (!TextUtils.isEmpty(responseBody) && responseBody!!.contains("UP")) {
+                if (!TextUtils.isEmpty(responseBody)) {
                     return true
                 }
+            } else if (isHttpRedirect(statusCode)) {
+                val redirectUrlString = urlConnection.getHeaderField("Location")
+                if (TextUtils.isEmpty(redirectUrlString)) {
+                    return false
+                }
+                val redirectUrl = URL(url, redirectUrlString)
+                try {
+                    if (urlConnection != null) {
+                        urlConnection.disconnect()
+                    }
+                } catch (e: java.lang.Exception) {
+                    //ignore
+                }
+                if (redirectUrl != null && url.toURI() == redirectUrl.toURI()) {
+                    return false
+                }
+                loadDataWithRedirects(context, redirectUrl)
             }
         } catch (e: Exception) {
             e.printStackTrace()

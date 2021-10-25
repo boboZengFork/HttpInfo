@@ -15,6 +15,16 @@ object Tools {
      * 转换成域名
      */
     fun getDomain(address: String?): String? {
+        try {
+            val url = getURL(address)
+            return url?.host
+        } catch (e: MalformedURLException) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+    fun getURL(address: String?):URL?{
         if (TextUtils.isEmpty(address)) {
             return null
         }
@@ -25,12 +35,24 @@ object Tools {
             str = "http://" + address!!.substring(8)
         }
         try {
-            val url = URL(str)
-            return url.host
+            return URL(str)
         } catch (e: MalformedURLException) {
             e.printStackTrace()
         }
         return null
+    }
+
+    fun getURLString(address: String?):String?{
+        if (TextUtils.isEmpty(address)) {
+            return null
+        }
+        var str = address
+        if (!str!!.startsWith("http")) {
+            str = "http://$address"
+        } else if (str!!.startsWith("https")) {
+            str = "http://" + address!!.substring(8)
+        }
+        return str
     }
 
     fun checkUrl(address: String?): Boolean {

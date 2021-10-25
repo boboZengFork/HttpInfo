@@ -12,8 +12,13 @@ object Dns {
     /**
      * dns解析，需要在有网的时候才能调用成功
      */
-    fun getInetAddress(host:String):String{
-        val inetAddress = InetAddress.getByName(host)
-        return inetAddress.hostAddress
+    fun getInetAddress(host:String):String?{
+        try {
+            val inetAddress = InetAddress.getByName(host)
+            return inetAddress.hostAddress
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
     }
 }

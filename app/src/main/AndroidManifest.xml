@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 网络切换权限相关 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 信号权限相关 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
 
     <application
@@ -22,6 +22,9 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".ResultActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DiagnoseActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
