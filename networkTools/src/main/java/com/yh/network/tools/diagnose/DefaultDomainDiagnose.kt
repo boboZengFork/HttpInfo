@@ -47,8 +47,8 @@ class DefaultDomainDiagnose(context: Context) : BaseDiagnose<DiagnoseBean>(conte
             bean.isInternet = isInternet
 
             //ping
-            val pingResponse = Ping.ping(Ping.createSimplePingCommand(10, 50, address!!))
-            bean.pingResponse = pingResponse
+            val pingResponse = Ping.ping(Ping.createSimplePingCommand(200, 500, address!!))
+//            bean.pingResponse = pingResponse
             if (!TextUtils.isEmpty(pingResponse)) {
                 bean.pingIp = Ping.parseIpFromPing(pingResponse!!)
                 Ping.parseLossFromPing(pingResponse, bean.pingBean)

@@ -40,8 +40,19 @@ public class DiagnoseActivity extends AppCompatActivity {
                 .add(new DefaultDomainDiagnose(this).address("glmh.yonghui.cn"))
                 .add(new DefaultDomainDiagnose(this).address("pc-mid-p.productcenterview.apis.yonghui.cn"))
                 .add(new DefaultDomainDiagnose(this).address("pc-mid-p.usercenter.apis.yonghui.cn"))
-                .add(new DefaultDomainDiagnose(this).address("pc-mid-p.usercenter.apis.yonghui.cn"))
-                .add(new DefaultDomainDiagnose(this).address("pc-mid-p.usercenter.apis.yonghui.cn"))
+                .add(new DefaultDomainDiagnose(this).address("pc-mid-p.other-view.apis.yonghui.cn"))
+                .add(new DefaultDomainDiagnose(this).address("cp-b2byjapp-sh-prod.tob-trading-platform.apis.yonghui.cn"))
+                .add(new DefaultDomainDiagnose(this).address("glzx.yonghui.cn"))
+                .add(new DefaultDomainDiagnose(this).address("scapi.yonghuivip.com"))
+                .add(new DefaultDomainDiagnose(this).address("pc-mid-p.suppliercenter-view.apis.yonghui.cn"))
+                .add(new DefaultDomainDiagnose(this).address("glreport.yonghui.cn"))
+                .add(new DefaultDomainDiagnose(this).address("pc-mid-p.certcenter-view.apis.yonghui.cn"))
+                .add(new DefaultDomainDiagnose(this).address("supplier.yonghui.cn"))
+                .add(new DefaultDomainDiagnose(this).address("sit.productcenter.sitgw.yonghui.cn"))
+                .add(new DefaultDomainDiagnose(this).address("supplier-master.ys.yonghui.cn"))
+                .add(new DefaultDomainDiagnose(this).address("glzx-sup-prod.yh-glzx-vss-view.fzapis.yonghui.cn"))
+                .add(new DefaultDomainDiagnose(this).address("glzx-sup-prod.yh-glzx-food-safety-front-to-h5.fzapis.yonghui.cn"))
+                .add(new DefaultDomainDiagnose(this).address("glzxsitserver.yonghui.cn"))
                 .load(new ToolsListener<Object>() {
                     @Override
                     public void start(String address) {
