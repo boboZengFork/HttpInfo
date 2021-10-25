@@ -25,7 +25,6 @@ class NetWorkDiagnose private constructor(context: Context) : BaseDiagnose<Diagn
     }
 
     override fun load(listener: ToolsListener<DiagnoseBean>?) {
-        listener?.start(address)
         super.load(listener)
         val bean = DiagnoseBean().apply {
             pingBean = PingBean()

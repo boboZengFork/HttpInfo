@@ -28,7 +28,10 @@ object Http {
     /**
      * 验证是否可以访问服务器（/actuator/health）
      */
-    fun loadHostActuatorHealth(context: Context?, host: String): Boolean {
+    fun loadHostActuatorHealth(context: Context?, host: String?): Boolean {
+        if (context == null || TextUtils.isEmpty(host)) {
+            return false
+        }
         return loadDataWithRedirects(context, URL("http://$host$ACTUATOR_HEALTH"))
     }
 

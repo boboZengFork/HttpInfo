@@ -18,7 +18,6 @@ import kotlinx.coroutines.launch
 class DefaultDomainDiagnose(context: Context) : BaseDiagnose<DiagnoseBean>(context) {
 
     override fun load(listener: ToolsListener<DiagnoseBean>?) {
-        listener?.start(address)
         super.load(listener)
         val bean = DiagnoseBean().apply {
             pingBean = PingBean()
@@ -33,7 +32,7 @@ class DefaultDomainDiagnose(context: Context) : BaseDiagnose<DiagnoseBean>(conte
             val networkAvailable = Net.isNetworkAvailable(context)
             bean.isConnectionNet = networkAvailable
             if (!networkAvailable) {
-                listener?.end(address,bean)
+                listener?.end(address, bean)
                 return@launch
             }
 
@@ -41,7 +40,10 @@ class DefaultDomainDiagnose(context: Context) : BaseDiagnose<DiagnoseBean>(conte
             bean.dnsIp = Dns.getInetAddress(address!!)
 
             //http
-            val isInternet = Http.loadDataWithRedirects(context, Tools.getURL(address))
+            var isInternet = Http.loadDataWithRedirects(context, Tools.getURL(address))
+            if (!isInternet) {
+                isInternet = Http.loadHostActuatorHealth(context, Tools.getDomain(address))
+            }
             bean.isInternet = isInternet
 
             //ping
@@ -53,7 +55,7 @@ class DefaultDomainDiagnose(context: Context) : BaseDiagnose<DiagnoseBean>(conte
                 Ping.parseDelayFromPing(pingResponse, bean.pingBean)
                 Ping.parseTtlFromPing(pingResponse, bean.pingBean)
             }
-            listener?.end(address,bean)
+            listener?.end(address, bean)
 
         }
     }

@@ -2,7 +2,6 @@ package com.yh.network.tools.diagnose
 
 import android.content.Context
 import android.text.TextUtils
-import com.yh.network.tools.DiagnoseProxy
 import com.yh.network.tools.ToolsListener
 import com.yh.network.tools.exception.AddressException
 import com.yh.network.tools.utils.Tools
@@ -28,8 +27,10 @@ open class BaseDiagnose<T>(var context: Context) : IDiagnose<T> {
     @Throws(AddressException::class)
     open override fun load(listener: ToolsListener<T>?) {
         this.listener = listener
+        listener?.start(address)
         if (TextUtils.isEmpty(address)) {
-           return throw AddressException("address不能为空或者null")
+            listener?.end(address,null)
+            return throw AddressException("address不能为空或者null")
         }
     }
 }
