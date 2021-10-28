@@ -7,49 +7,69 @@ package com.yh.network.tools.bean;
  */
 public class DiagnoseBean {
     /**
-     * 手机是否连接了网络（wifi或者移动网络）
-     */
-    private boolean isConnectionNet;
-    /**
-     * 手机是否连接互联网
-     */
-    private boolean isInternet;
-    /**
      * 需要诊断地址
      */
     private String diagnoseAddress;
+
+    /**
+     * 手机是否连接了网络（wifi或者移动网络）
+     */
+    private boolean isConnectedNet;
+
+    /**
+     * 是否可以通过url访问
+     */
+    private boolean isConnectedUrl;
+
+    /**
+     * 是否可以通过url访问 actuator/health
+     */
+    private boolean isConnectedUrlActuatorHealth;
+
+    /**
+     * 网络类型
+     */
+    private String networkType;
+
+    /**
+     * 手机是有有代理
+     */
     private boolean HasProxy;
+
     /**
      * 本地代理ip
      */
     private String proxyHost;
+
     /**
      * 本地代理端口
      */
     private int proxyPort = -1;
+
     /**
      * ping返回的数据
      */
     private String pingResponse;
+
+    /**
+     * ping数据解析
+     */
     private PingBean pingBean;
+
+    /**
+     * api获取ip
+     */
     private String dnsIp;
+
+    /**
+     * ping操作获取ip
+     */
     private String pingIp;
 
-    public boolean isConnectionNet() {
-        return isConnectionNet;
-    }
-
-    public void setConnectionNet(boolean connectionNet) {
-        isConnectionNet = connectionNet;
-    }
-
-    public boolean isInternet() {
-        return isInternet;
-    }
-
-    public void setInternet(boolean internet) {
-        isInternet = internet;
-    }
+    /**
+     * 是否可以ping
+     */
+    private boolean enablePing;
 
     public String getDiagnoseAddress() {
         return diagnoseAddress;
@@ -57,6 +77,38 @@ public class DiagnoseBean {
 
     public void setDiagnoseAddress(String diagnoseAddress) {
         this.diagnoseAddress = diagnoseAddress;
+    }
+
+    public boolean isConnectedNet() {
+        return isConnectedNet;
+    }
+
+    public void setConnectedNet(boolean connectedNet) {
+        isConnectedNet = connectedNet;
+    }
+
+    public boolean isConnectedUrl() {
+        return isConnectedUrl;
+    }
+
+    public void setConnectedUrl(boolean connectedUrl) {
+        isConnectedUrl = connectedUrl;
+    }
+
+    public boolean isConnectedUrlActuatorHealth() {
+        return isConnectedUrlActuatorHealth;
+    }
+
+    public void setConnectedUrlActuatorHealth(boolean connectedUrlActuatorHealth) {
+        isConnectedUrlActuatorHealth = connectedUrlActuatorHealth;
+    }
+
+    public String getNetworkType() {
+        return networkType;
+    }
+
+    public void setNetworkType(String networkType) {
+        this.networkType = networkType;
     }
 
     public boolean isHasProxy() {
@@ -113,5 +165,13 @@ public class DiagnoseBean {
 
     public void setPingIp(String pingIp) {
         this.pingIp = pingIp;
+    }
+
+    public boolean isEnablePing() {
+        return enablePing;
+    }
+
+    public void setEnablePing(boolean enablePing) {
+        this.enablePing = enablePing;
     }
 }

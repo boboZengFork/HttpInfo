@@ -1,10 +1,13 @@
 package com.example.httpinfo;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,42 +39,45 @@ public class DiagnoseActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         rvResult.setLayoutManager(linearLayoutManager);
         clpbLoading.show();
-        DiagnoseProxy.Companion.newInstance(this)
-                .add(new DefaultDomainDiagnose(this).address("glmh.yonghui.cn"))
-                .add(new DefaultDomainDiagnose(this).address("pc-mid-p.productcenterview.apis.yonghui.cn"))
-                .add(new DefaultDomainDiagnose(this).address("pc-mid-p.usercenter.apis.yonghui.cn"))
-                .add(new DefaultDomainDiagnose(this).address("pc-mid-p.other-view.apis.yonghui.cn"))
-                .add(new DefaultDomainDiagnose(this).address("cp-b2byjapp-sh-prod.tob-trading-platform.apis.yonghui.cn"))
-                .add(new DefaultDomainDiagnose(this).address("glzx.yonghui.cn"))
-                .add(new DefaultDomainDiagnose(this).address("scapi.yonghuivip.com"))
-                .add(new DefaultDomainDiagnose(this).address("pc-mid-p.suppliercenter-view.apis.yonghui.cn"))
-                .add(new DefaultDomainDiagnose(this).address("glreport.yonghui.cn"))
-                .add(new DefaultDomainDiagnose(this).address("pc-mid-p.certcenter-view.apis.yonghui.cn"))
-                .add(new DefaultDomainDiagnose(this).address("supplier.yonghui.cn"))
-                .add(new DefaultDomainDiagnose(this).address("sit.productcenter.sitgw.yonghui.cn"))
-                .add(new DefaultDomainDiagnose(this).address("supplier-master.ys.yonghui.cn"))
-                .add(new DefaultDomainDiagnose(this).address("glzx-sup-prod.yh-glzx-vss-view.fzapis.yonghui.cn"))
-                .add(new DefaultDomainDiagnose(this).address("glzx-sup-prod.yh-glzx-food-safety-front-to-h5.fzapis.yonghui.cn"))
-                .add(new DefaultDomainDiagnose(this).address("glzxsitserver.yonghui.cn"))
-                .load(new ToolsListener<Object>() {
-                    @Override
-                    public void start(String address) {
-                        index++;
-                        System.out.println("DiagnoseActivity DiagnoseProxy start address=" + address);
-                    }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+            DiagnoseProxy.Companion.newInstance(this)
+                    .add("glmh.yonghui.cn")
+                    .add("pc-mid-p.productcenterview.apis.yonghui.cn")
+                    .add(new DefaultDomainDiagnose(this).address("pc-mid-p.usercenter.apis.yonghui.cn"))
+                    .add(new DefaultDomainDiagnose(this).address("pc-mid-p.other-view.apis.yonghui.cn"))
+                    .add(new DefaultDomainDiagnose(this).address("cp-b2byjapp-sh-prod.tob-trading-platform.apis.yonghui.cn"))
+                    .add(new DefaultDomainDiagnose(this).address("glzx.yonghui.cn"))
+                    .add(new DefaultDomainDiagnose(this).address("scapi.yonghuivip.com"))
+                    .add(new DefaultDomainDiagnose(this).address("pc-mid-p.suppliercenter-view.apis.yonghui.cn"))
+                    .add(new DefaultDomainDiagnose(this).address("glreport.yonghui.cn"))
+                    .add(new DefaultDomainDiagnose(this).address("pc-mid-p.certcenter-view.apis.yonghui.cn"))
+                    .add(new DefaultDomainDiagnose(this).address("supplier.yonghui.cn"))
+                    .add(new DefaultDomainDiagnose(this).address("sit.productcenter.sitgw.yonghui.cn"))
+                    .add(new DefaultDomainDiagnose(this).address("supplier-master.ys.yonghui.cn"))
+                    .add(new DefaultDomainDiagnose(this).address("glzx-sup-prod.yh-glzx-vss-view.fzapis.yonghui.cn"))
+                    .add(new DefaultDomainDiagnose(this).address("glzx-sup-prod.yh-glzx-food-safety-front-to-h5.fzapis.yonghui.cn"))
+                    .add(new DefaultDomainDiagnose(this).address("glzxsitserver.yonghui.cn"))
+                    .load(new ToolsListener<Object>() {
+                        @Override
+                        public void start(String address) {
+                            index++;
+                            System.out.println("DiagnoseActivity DiagnoseProxy start address=" + address);
+                        }
 
-                    @Override
-                    public void end(String address, Object bean) {
-                        index--;
-                        System.out.println("DiagnoseActivity DiagnoseProxy end address=" + address);
-                        resultAdapter.insertData(new ResultBean(address, new Gson().toJson(bean)));
-                        if (index <= 0) {
-                            if (clpbLoading != null && clpbLoading.isShown()) {
-                                clpbLoading.hide();
+                        @Override
+                        public void end(String address, Object bean) {
+                            index--;
+                            System.out.println("DiagnoseActivity DiagnoseProxy end address=" + address);
+                            resultAdapter.insertData(new ResultBean(address, new Gson().toJson(bean)));
+                            if (index <= 0) {
+                                if (clpbLoading != null && clpbLoading.isShown()) {
+                                    clpbLoading.hide();
+                                }
                             }
                         }
-                    }
-                });
+                    });
+        }
+
     }
 
 

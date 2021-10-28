@@ -18,6 +18,9 @@ import androidx.core.content.ContextCompat;
 
 import com.yh.network.tools.DiagnoseProxy;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import fairy.easy.httpmodel.util.HttpLog;
 
 public class MainActivity extends AppCompatActivity {
@@ -87,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
     }
 
     private void goToSettings() {

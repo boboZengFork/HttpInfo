@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.httpinfo.R;
 import com.example.httpinfo.ResultBean;
+import com.yh.network.tools.bean.DiagnoseBean;
 
 
 /**
@@ -26,12 +27,60 @@ public class DiagnoseAdapter extends BaseRecyclerAdapter<ResultBean> {
                 break;
             }
         }
+//        if (flag) {
+//            list.add(list.size(), item);
+//            notifyItemInserted(list.size() - 1);
+//        } else {
+//            notifyDataSetChanged();
+//        }
         if (flag) {
-            list.add(list.size(), item);
-            notifyItemInserted(list.size()-1);
-        } else {
-            notifyDataSetChanged();
+            if (item.getParam() instanceof DiagnoseBean) {
+                DiagnoseBean bean = (DiagnoseBean) item.getParam();
+                if (bean != null) {
+                    if (bean.isEnablePing() && (bean.isConnectedUrl() || bean.isConnectedUrlActuatorHealth())) {
+                        list.add(0, item);
+                    } else if (!bean.isEnablePing()) {
+                        for (int i = 0; i < getItemCount(); i++) {
+                            ResultBean item1 = list.get(i);
+                            if (item1.getParam() instanceof DiagnoseBean) {
+                                DiagnoseBean bean1 = (DiagnoseBean) item1.getParam();
+                                if (!bean1.isEnablePing()) {
+                                    list.add(i, item);
+                                }
+                            }
+                        }
+                    } else if (!bean.isConnectedUrl()) {
+                        for (int i = 0; i < getItemCount(); i++) {
+                            ResultBean item1 = list.get(i);
+                            if (item1.getParam() instanceof DiagnoseBean) {
+                                DiagnoseBean bean1 = (DiagnoseBean) item1.getParam();
+                                if (!bean1.isConnectedUrl()) {
+                                    list.add(i, item);
+                                }
+                            }
+                        }
+                    } else if (!bean.isConnectedUrlActuatorHealth()) {
+                        for (int i = 0; i < getItemCount(); i++) {
+                            ResultBean item1 = list.get(i);
+                            if (item1.getParam() instanceof DiagnoseBean) {
+                                DiagnoseBean bean1 = (DiagnoseBean) item1.getParam();
+                                if (!bean1.isConnectedUrlActuatorHealth()) {
+                                    list.add(i, item);
+                                }
+                            }
+                        }
+                    } else {
+                        list.add(item);
+                    }
+                } else {
+                    list.add(item);
+                }
+            } else {
+                list.add(item);
+            }
         }
+
+        notifyDataSetChanged();
 
     }
 
@@ -49,7 +98,7 @@ public class DiagnoseAdapter extends BaseRecyclerAdapter<ResultBean> {
 
     @Override
     public void convert(BaseRecyclerHolder baseRecyclerHolder, ResultBean item, int position) {
-        baseRecyclerHolder.setText(R.id.item_activity_result_rv_tv, item.getTitle());
+        baseRecyclerHolder.setText(R.id.item_activity_result_rv_tv, (position + 1) + "  " + item.getTitle());
         baseRecyclerHolder.setText(R.id.item_activity_result_rv_tv_param, formatString(item.getParam().toString()));
     }
 

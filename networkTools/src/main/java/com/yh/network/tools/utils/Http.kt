@@ -14,7 +14,7 @@ import java.net.URL
  * @author: zengbobo
  */
 object Http {
-    private const val DEFAULT_TIMEOUT = 5 * 1000
+    private const val DEFAULT_TIMEOUT = 50 * 1000
     private const val ACTUATOR_HEALTH = "/actuator/health"
 
     private fun isHttpOk(statusCode: Int): Boolean {
@@ -84,7 +84,7 @@ object Http {
                 if (redirectUrl != null && url.toURI() == redirectUrl.toURI()) {
                     return false
                 }
-                loadDataWithRedirects(context, redirectUrl)
+               return loadDataWithRedirects(context, redirectUrl)
             }
         } catch (e: Exception) {
             e.printStackTrace()

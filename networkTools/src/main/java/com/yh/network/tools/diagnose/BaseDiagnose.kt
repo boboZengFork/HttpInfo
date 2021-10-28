@@ -2,6 +2,7 @@ package com.yh.network.tools.diagnose
 
 import android.content.Context
 import android.text.TextUtils
+import androidx.annotation.RequiresPermission
 import com.yh.network.tools.ToolsListener
 import com.yh.network.tools.exception.AddressException
 import com.yh.network.tools.utils.Tools
@@ -24,6 +25,7 @@ open class BaseDiagnose<T>(var context: Context) : IDiagnose<T> {
         return this
     }
 
+    @RequiresPermission(android.Manifest.permission.READ_PHONE_STATE)
     @Throws(AddressException::class)
     open override fun load(listener: ToolsListener<T>?) {
         this.listener = listener

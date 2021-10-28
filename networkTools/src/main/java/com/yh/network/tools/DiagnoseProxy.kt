@@ -1,7 +1,9 @@
 package com.yh.network.tools
 
 import android.content.Context
+import androidx.annotation.RequiresPermission
 import com.yh.network.tools.diagnose.BaseDiagnose
+import com.yh.network.tools.diagnose.DefaultDomainDiagnose
 import com.yh.network.tools.diagnose.IDiagnose
 import com.yh.network.tools.diagnose.NetWorkDiagnose
 import kotlinx.coroutines.Dispatchers
@@ -13,11 +15,11 @@ import kotlinx.coroutines.launch
  * @date: 2021/10/21 4:13 下午
  * @author: zengbobo
  */
-class DiagnoseProxy : IDiagnose<Any>, ToolsListener<Any> {
+class DiagnoseProxy(var context: Context) : IDiagnose<Any>, ToolsListener<Any> {
 
     companion object {
         fun newInstance(context: Context): DiagnoseProxy {
-            return DiagnoseProxy().add(NetWorkDiagnose.newInstance(context))
+            return DiagnoseProxy(context).add(NetWorkDiagnose.newInstance(context))
         }
     }
 
@@ -29,6 +31,12 @@ class DiagnoseProxy : IDiagnose<Any>, ToolsListener<Any> {
         return this
     }
 
+    fun add(address: String?): DiagnoseProxy {
+        list.add(DefaultDomainDiagnose(context).address(address) as BaseDiagnose<Any>)
+        return this
+    }
+
+    @RequiresPermission(android.Manifest.permission.READ_PHONE_STATE)
     override fun load(listener: ToolsListener<Any>?) {
         this.listener = listener
         list.forEach {
