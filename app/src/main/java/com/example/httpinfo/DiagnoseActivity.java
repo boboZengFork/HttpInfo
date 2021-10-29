@@ -46,8 +46,8 @@ public class DiagnoseActivity extends AppCompatActivity {
             diagnoseProxy = DiagnoseProxy.Companion.newInstance(this);
             diagnoseProxy.basics(BasicsDiagnose.Companion.newInstance(this))
                     .add( SpecialDiagnose.Companion.newInstance(this,"www.baidu.com"))
-                    .add("glmh.yonghui.cn")
-                    .add("pc-mid-p.productcenterview.apis.yonghui.cn")
+                    .add("sit.productcenter.sitgw.yonghui.cn")
+                    .add("qwerty.adfgweqbr.com")
 //                    .add(new DefaultDomainDiagnose(this).address("pc-mid-p.usercenter.apis.yonghui.cn"))
 //                    .add(new DefaultDomainDiagnose(this).address("pc-mid-p.other-view.apis.yonghui.cn"))
 //                    .add(new DefaultDomainDiagnose(this).address("cp-b2byjapp-sh-prod.tob-trading-platform.apis.yonghui.cn"))

@@ -4,7 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 
 /**
- * @description $
+ *  诊断异常工具基类
  * @date: 2021/10/22 11:37 上午
  * @author: zengbobo
  */

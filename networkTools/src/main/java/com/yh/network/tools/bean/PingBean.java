@@ -1,7 +1,7 @@
 package com.yh.network.tools.bean;
 
 /**
- * ping获取到的数据
+ * ping获取到的数据实体类
  *
  * @author
  * @time

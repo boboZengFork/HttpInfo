@@ -4,7 +4,7 @@ import com.yh.network.tools.ToolsListener
 import com.yh.network.tools.response.DiagnoseResponse
 
 /**
- * @description $
+ * 诊断类入口规范
  * @date: 2021/10/22 10:50 上午
  * @author: zengbobo
  */

@@ -9,7 +9,7 @@ import com.yh.network.tools.response.DiagnoseResponse
 import com.yh.network.tools.utils.Tools
 
 /**
- * @description $
+ * 诊断基类
  * @date: 2021/10/22 10:53 上午
  * @author: zengbobo
  */

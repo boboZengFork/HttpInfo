@@ -13,7 +13,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 /**
- * @description $
+ * 参照类实现域名诊断
  * @date: 2021/10/22 10:53 上午
  * @author: zengbobo
  */
@@ -37,7 +37,7 @@ class SpecialDiagnose(context: Context) : BaseDiagnose(context) {
                     this.address = this@SpecialDiagnose.address
                     pingBean = PingBean().apply {
                         //ping
-                        val pingResponse = Ping.ping(Ping.createSimplePingCommand(200, 500, address!!))
+                        val pingResponse = Ping.ping(Ping.createSimplePingCommand(20, 50, address!!))
                         if (!TextUtils.isEmpty(pingResponse)) {
                             this.isEnablePing = true
                             this.pingIp = Ping.parseIpFromPing(pingResponse!!)

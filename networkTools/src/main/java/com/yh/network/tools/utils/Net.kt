@@ -15,7 +15,7 @@ import java.net.NetworkInterface
 import java.util.*
 
 /**
- * @description $
+ * 网络判断
  * @date: 2021/10/20 2:04 下午
  * @author: zengbobo
  */

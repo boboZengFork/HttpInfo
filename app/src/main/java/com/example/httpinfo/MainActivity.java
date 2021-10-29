@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -17,6 +18,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.yh.network.tools.DiagnoseProxy;
+import com.yh.network.tools.utils.Ping;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -47,10 +49,22 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), DiagnoseActivity.class);
-                intent.putExtra(HTTP_ADDRESS, etInput.getText().toString());
-                intent.putExtra(HTTP_RB, radioButton.isChecked());
-                startActivity(intent);
+//                Intent intent = new Intent(getApplicationContext(), DiagnoseActivity.class);
+//                intent.putExtra(HTTP_ADDRESS, etInput.getText().toString());
+//                intent.putExtra(HTTP_RB, radioButton.isChecked());
+//                startActivity(intent);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    String pingResponse = Ping.INSTANCE.ping(Ping.INSTANCE.createSimplePingCommand(10, 50, "sit.productcenter.sitgw.yonghui.cn"));
+                    Log.i("zengbobo"," pingResponse1="+pingResponse);
+
+                    String pingResponse1 = Ping.INSTANCE.ping(Ping.INSTANCE.createSimplePingCommand(10, 50, "www.baidu.com"));
+                    Log.i("zengbobo"," pingResponse2="+pingResponse1);
+                }
+            }).start();
+
+
             }
         });
 

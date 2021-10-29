@@ -7,7 +7,7 @@ import java.io.InputStream
 import java.io.InputStreamReader
 
 /**
- * @description $
+ * ping 命令功能
  * @date: 2021/10/21 11:02 上午
  * @author: zengbobo
  */
@@ -75,10 +75,8 @@ object Ping {
                 sb.append(line)
                 sb.append("\n")
             }
-            println("znegbobo ping ${sb.toString()}")
             return sb.toString()
         } catch (e: IOException) {
-            println("znegbobo ping IOException")
             e.printStackTrace()
         } finally {
             reader?.close()

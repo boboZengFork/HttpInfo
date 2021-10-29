@@ -4,7 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 
 /**
- * @description $
+ * 域名异常
  * @date: 2021/10/22 11:37 上午
  * @author: zengbobo
  */

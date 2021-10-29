@@ -17,7 +17,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 /**
- * @description $
+ * 本机基础网络信息诊断
  * @date: 2021/10/22 10:53 上午
  * @author: zengbobo
  */
@@ -59,7 +59,7 @@ class BasicsDiagnose private constructor(context: Context) : BaseDiagnose(contex
                 //127.0.0.1
                 localHost = DiagnoseBean().apply {
                     address = "127.0.0.1"
-                    val pingResponse = Ping.ping(Ping.createSimplePingCommand(200, 500, address))
+                    val pingResponse = Ping.ping(Ping.createSimplePingCommand(20, 50, address))
                     pingBean = PingBean().apply {
                         if (!TextUtils.isEmpty(pingResponse)) {
                             this.isEnablePing = true
@@ -76,7 +76,7 @@ class BasicsDiagnose private constructor(context: Context) : BaseDiagnose(contex
                 //本地ip
                 localIp = DiagnoseBean().apply {
                     address = basics.localIp
-                    val pingResponse = Ping.ping(Ping.createSimplePingCommand(200, 500, address))
+                    val pingResponse = Ping.ping(Ping.createSimplePingCommand(20, 50, address))
                     pingBean = PingBean().apply {
                         if (!TextUtils.isEmpty(pingResponse)) {
                             this.isEnablePing = true
@@ -93,7 +93,7 @@ class BasicsDiagnose private constructor(context: Context) : BaseDiagnose(contex
                 //本地dns
                 localDns = DiagnoseBean().apply {
                     address = basics.localDns
-                    val pingResponse = Ping.ping(Ping.createSimplePingCommand(200, 500, address))
+                    val pingResponse = Ping.ping(Ping.createSimplePingCommand(20, 50, address))
                     pingBean = PingBean().apply {
                         if (!TextUtils.isEmpty(pingResponse)) {
                             this.isEnablePing = true

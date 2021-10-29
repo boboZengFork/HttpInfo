@@ -2,7 +2,7 @@ package com.yh.network.tools.bean;
 
 /**
  *
- * 本机网络基本信息
+ * 本机网络基本信息实体类
  *
  * @date: 2021/10/28 3:51 下午
  * @author: zengbobo

@@ -64,6 +64,10 @@ class DiagnoseProxy(var context: Context) : IDiagnose, ToolsListener {
 
                 @SuppressLint("MissingPermission")
                 override fun end(address: String?, response: DiagnoseResponse) {
+                    if (response.basics?.isConnectedNet != true) {
+                        count = 0
+                        return
+                    }
                     this@DiagnoseProxy.end(address, response)
                     if (response.basics?.isConnectedNet == true) {
                         list.forEach {

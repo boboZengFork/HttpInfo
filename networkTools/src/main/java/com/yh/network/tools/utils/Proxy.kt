@@ -6,7 +6,7 @@ import android.os.Build
 import android.text.TextUtils
 
 /**
- * @description $
+ * 本机代理获取
  * @date: 2021/10/21 2:29 下午
  * @author: zengbobo
  */

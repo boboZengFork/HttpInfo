@@ -1,7 +1,7 @@
 package com.yh.network.tools.bean;
 
 /**
- * @description $
+ * 域名诊断结果实体类
  * @date: 2021/10/22 2:14 下午
  * @author: zengbobo
  */

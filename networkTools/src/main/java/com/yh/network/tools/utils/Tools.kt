@@ -5,7 +5,7 @@ import java.net.MalformedURLException
 import java.net.URL
 
 /**
- * @description $
+ * 诊断工具类
  * @date: 2021/10/21 3:38 下午
  * @author: zengbobo
  */

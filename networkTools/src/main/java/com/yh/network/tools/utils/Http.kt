@@ -9,7 +9,7 @@ import java.net.SocketAddress
 import java.net.URL
 
 /**
- * @description $
+ * URL 实现 HttpURLConnection
  * @date: 2021/10/21 2:28 下午
  * @author: zengbobo
  */

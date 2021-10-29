@@ -13,7 +13,7 @@ import java.net.InetAddress
 import java.util.*
 
 /**
- * @description $
+ * dns解析
  * @date: 2021/10/21 1:51 下午
  * @author: zengbobo
  */
