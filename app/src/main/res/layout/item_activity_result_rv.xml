@@ -16,7 +16,6 @@
             android:id="@+id/item_activity_result_rv_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="www.baidu.com"
             android:textColor="#000000"
             android:textSize="18sp"
             app:layout_constraintLeft_toLeftOf="parent"

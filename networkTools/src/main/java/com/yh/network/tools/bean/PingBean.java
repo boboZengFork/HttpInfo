@@ -1,22 +1,73 @@
 package com.yh.network.tools.bean;
 
 /**
- * Created by 谷闹年 on 2018/8/15.
+ * ping获取到的数据
+ *
+ * @author
+ * @time
  */
+public class PingBean extends BaseBean {
 
-public class PingBean {
-    private float lossRate;
-    private int receive;
-    private float rttAvg;
-    private float rttMDev;
-    private float rttMax;
-    private float rttMin;
-    private int ttl;
-    private int error;
+    /**
+     * 是否可以ping
+     */
+    private boolean enablePing;
+
+    /**
+     * ping操作获取ip
+     */
+    private String pingIp;
+    /**
+     * 发送包
+     */
     private int transmitted;
+
+    /**
+     * 接受包
+     */
+    private int receive;
+    /**
+     * 丢包率：百分比%
+     */
+    private float lossRate;
+    /**
+     * 平均rtt（ms）
+     */
+    private float rttAvg;
+    /**
+     * 算数平均偏差rtt（ms）
+     */
+    private float rttMDev;
+    /**
+     * 最大rtt（ms）
+     */
+    private float rttMax;
+    /**
+     * 最小rtt（ms）
+     */
+    private float rttMin;
+    /**
+     * 生存时间（ms）
+     */
+    private int ttl;
+    /**
+     * 执行结果：-1 失败，200 成功
+     */
+    private int error;
+    /**
+     * 总消耗时间（ms）
+     */
     private int allTime;
 
     public PingBean() {
+    }
+
+    public boolean isEnablePing() {
+        return enablePing;
+    }
+
+    public void setEnablePing(boolean enablePing) {
+        this.enablePing = enablePing;
     }
 
     public int getAllTime() {
@@ -95,9 +146,15 @@ public class PingBean {
         return this.rttMin;
     }
 
-
     public int getTtl() {
         return this.ttl;
     }
 
+    public String getPingIp() {
+        return pingIp;
+    }
+
+    public void setPingIp(String pingIp) {
+        this.pingIp = pingIp;
+    }
 }

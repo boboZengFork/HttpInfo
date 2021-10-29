@@ -13,10 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.httpinfo.adapter.DiagnoseAdapter;
-import com.google.gson.Gson;
 import com.yh.network.tools.DiagnoseProxy;
 import com.yh.network.tools.ToolsListener;
-import com.yh.network.tools.diagnose.DefaultDomainDiagnose;
+import com.yh.network.tools.diagnose.BaseDiagnose;
+import com.yh.network.tools.diagnose.BasicsDiagnose;
+import com.yh.network.tools.diagnose.SpecialDiagnose;
+import com.yh.network.tools.response.DiagnoseResponse;
 
 public class DiagnoseActivity extends AppCompatActivity {
 
@@ -24,6 +26,7 @@ public class DiagnoseActivity extends AppCompatActivity {
     private RecyclerView rvResult;
     private volatile int index = 0;
     private DiagnoseAdapter resultAdapter;
+    private DiagnoseProxy diagnoseProxy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,24 +43,26 @@ public class DiagnoseActivity extends AppCompatActivity {
         rvResult.setLayoutManager(linearLayoutManager);
         clpbLoading.show();
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
-            DiagnoseProxy.Companion.newInstance(this)
+            diagnoseProxy = DiagnoseProxy.Companion.newInstance(this);
+            diagnoseProxy.basics(BasicsDiagnose.Companion.newInstance(this))
+                    .add( SpecialDiagnose.Companion.newInstance(this,"www.baidu.com"))
                     .add("glmh.yonghui.cn")
                     .add("pc-mid-p.productcenterview.apis.yonghui.cn")
-                    .add(new DefaultDomainDiagnose(this).address("pc-mid-p.usercenter.apis.yonghui.cn"))
-                    .add(new DefaultDomainDiagnose(this).address("pc-mid-p.other-view.apis.yonghui.cn"))
-                    .add(new DefaultDomainDiagnose(this).address("cp-b2byjapp-sh-prod.tob-trading-platform.apis.yonghui.cn"))
-                    .add(new DefaultDomainDiagnose(this).address("glzx.yonghui.cn"))
-                    .add(new DefaultDomainDiagnose(this).address("scapi.yonghuivip.com"))
-                    .add(new DefaultDomainDiagnose(this).address("pc-mid-p.suppliercenter-view.apis.yonghui.cn"))
-                    .add(new DefaultDomainDiagnose(this).address("glreport.yonghui.cn"))
-                    .add(new DefaultDomainDiagnose(this).address("pc-mid-p.certcenter-view.apis.yonghui.cn"))
-                    .add(new DefaultDomainDiagnose(this).address("supplier.yonghui.cn"))
-                    .add(new DefaultDomainDiagnose(this).address("sit.productcenter.sitgw.yonghui.cn"))
-                    .add(new DefaultDomainDiagnose(this).address("supplier-master.ys.yonghui.cn"))
-                    .add(new DefaultDomainDiagnose(this).address("glzx-sup-prod.yh-glzx-vss-view.fzapis.yonghui.cn"))
-                    .add(new DefaultDomainDiagnose(this).address("glzx-sup-prod.yh-glzx-food-safety-front-to-h5.fzapis.yonghui.cn"))
-                    .add(new DefaultDomainDiagnose(this).address("glzxsitserver.yonghui.cn"))
-                    .load(new ToolsListener<Object>() {
+//                    .add(new DefaultDomainDiagnose(this).address("pc-mid-p.usercenter.apis.yonghui.cn"))
+//                    .add(new DefaultDomainDiagnose(this).address("pc-mid-p.other-view.apis.yonghui.cn"))
+//                    .add(new DefaultDomainDiagnose(this).address("cp-b2byjapp-sh-prod.tob-trading-platform.apis.yonghui.cn"))
+//                    .add(new DefaultDomainDiagnose(this).address("glzx.yonghui.cn"))
+//                    .add(new DefaultDomainDiagnose(this).address("scapi.yonghuivip.com"))
+//                    .add(new DefaultDomainDiagnose(this).address("pc-mid-p.suppliercenter-view.apis.yonghui.cn"))
+//                    .add(new DefaultDomainDiagnose(this).address("glreport.yonghui.cn"))
+//                    .add(new DefaultDomainDiagnose(this).address("pc-mid-p.certcenter-view.apis.yonghui.cn"))
+//                    .add(new DefaultDomainDiagnose(this).address("supplier.yonghui.cn"))
+//                    .add(new DefaultDomainDiagnose(this).address("sit.productcenter.sitgw.yonghui.cn"))
+//                    .add(new DefaultDomainDiagnose(this).address("supplier-master.ys.yonghui.cn"))
+//                    .add(new DefaultDomainDiagnose(this).address("glzx-sup-prod.yh-glzx-vss-view.fzapis.yonghui.cn"))
+//                    .add(new DefaultDomainDiagnose(this).address("glzx-sup-prod.yh-glzx-food-safety-front-to-h5.fzapis.yonghui.cn"))
+//                    .add(new DefaultDomainDiagnose(this).address("glzxsitserver.yonghui.cn"))
+                    .load(new DiagnoseResponse(), new ToolsListener() {
                         @Override
                         public void start(String address) {
                             index++;
@@ -65,10 +70,10 @@ public class DiagnoseActivity extends AppCompatActivity {
                         }
 
                         @Override
-                        public void end(String address, Object bean) {
+                        public void end(String address, DiagnoseResponse bean) {
                             index--;
                             System.out.println("DiagnoseActivity DiagnoseProxy end address=" + address);
-                            resultAdapter.insertData(new ResultBean(address, new Gson().toJson(bean)));
+                            resultAdapter.insertData(bean);
                             if (index <= 0) {
                                 if (clpbLoading != null && clpbLoading.isShown()) {
                                     clpbLoading.hide();
@@ -84,7 +89,7 @@ public class DiagnoseActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-            if (index <= 0) {
+            if (diagnoseProxy != null && diagnoseProxy.getCount() <= 0) {
                 return super.onKeyDown(keyCode, event);
             } else {
                 Toast.makeText(getApplicationContext(), getString(R.string.result_wait), Toast.LENGTH_SHORT).show();

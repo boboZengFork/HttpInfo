@@ -7,10 +7,7 @@ package com.yh.network.tools.constans
  */
 interface ConstantParams {
     companion object {
-        const val PING_transmitted = "transmitted"
-        const val PING_received = "received"
-        const val PING_errors = "errors"
-        const val PING_loss = "loss"
-        const val PING_time = "time"
+        const val HTTP_ERROR = -1
+        const val HTTP_SUCCESS = 200
     }
 }

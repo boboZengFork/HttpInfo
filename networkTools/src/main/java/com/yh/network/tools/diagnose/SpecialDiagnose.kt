@@ -17,13 +17,12 @@ import kotlinx.coroutines.launch
  * @date: 2021/10/22 10:53 上午
  * @author: zengbobo
  */
-open class DefaultDomainDiagnose(context: Context) : BaseDiagnose(context) {
+class SpecialDiagnose(context: Context) : BaseDiagnose(context) {
     companion object {
         fun newInstance(context: Context, address: String?): BaseDiagnose {
-            return DefaultDomainDiagnose(context).address(address)
+            return SpecialDiagnose(context).address(address)
         }
     }
-
 
     @RequiresPermission(android.Manifest.permission.READ_PHONE_STATE)
     override fun load(response: DiagnoseResponse, listener: ToolsListener?) {
@@ -33,13 +32,12 @@ open class DefaultDomainDiagnose(context: Context) : BaseDiagnose(context) {
             return
         }
         GlobalScope.launch(Dispatchers.IO) {
-            with(response) {
-                val mDiagnoseBean = DiagnoseBean().apply {
-                    this.address = this@DefaultDomainDiagnose.address
+            with(response){
+               special = DiagnoseBean().apply {
+                    this.address = this@SpecialDiagnose.address
                     pingBean = PingBean().apply {
                         //ping
-                        val pingResponse =
-                            Ping.ping(Ping.createSimplePingCommand(200, 500, address!!))
+                        val pingResponse = Ping.ping(Ping.createSimplePingCommand(200, 500, address!!))
                         if (!TextUtils.isEmpty(pingResponse)) {
                             this.isEnablePing = true
                             this.pingIp = Ping.parseIpFromPing(pingResponse!!)
@@ -51,7 +49,6 @@ open class DefaultDomainDiagnose(context: Context) : BaseDiagnose(context) {
                         }
                     }
                 }
-                response.data.add(mDiagnoseBean)
             }
             listener?.end(address, response)
         }

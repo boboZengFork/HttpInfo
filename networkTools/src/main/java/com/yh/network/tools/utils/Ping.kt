@@ -75,8 +75,10 @@ object Ping {
                 sb.append(line)
                 sb.append("\n")
             }
+            println("znegbobo ping ${sb.toString()}")
             return sb.toString()
         } catch (e: IOException) {
+            println("znegbobo ping IOException")
             e.printStackTrace()
         } finally {
             reader?.close()

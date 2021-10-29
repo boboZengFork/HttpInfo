@@ -3,107 +3,34 @@ package com.example.httpinfo.adapter;
 import android.content.Context;
 
 import com.example.httpinfo.R;
-import com.example.httpinfo.ResultBean;
-import com.yh.network.tools.bean.DiagnoseBean;
+import com.google.gson.Gson;
+import com.yh.network.tools.response.DiagnoseResponse;
 
 
 /**
  * Created by gunaonian on 2018/3/30.
  */
 
-public class DiagnoseAdapter extends BaseRecyclerAdapter<ResultBean> {
+public class DiagnoseAdapter extends BaseRecyclerAdapter<DiagnoseResponse> {
 
     public DiagnoseAdapter(Context context, int itemLayoutId) {
         super(context, itemLayoutId);
     }
 
     @Override
-    public void insertData(ResultBean item) {
-        boolean flag = true;
-        for (ResultBean bean : list) {
-            if (bean.getTitle().equals(item.getTitle())) {
-                flag = false;
-                bean.setParam(item.getParam());
-                break;
-            }
-        }
-//        if (flag) {
-//            list.add(list.size(), item);
-//            notifyItemInserted(list.size() - 1);
-//        } else {
-//            notifyDataSetChanged();
-//        }
-        if (flag) {
-            if (item.getParam() instanceof DiagnoseBean) {
-                DiagnoseBean bean = (DiagnoseBean) item.getParam();
-                if (bean != null) {
-                    if (bean.isEnablePing() && (bean.isConnectedUrl() || bean.isConnectedUrlActuatorHealth())) {
-                        list.add(0, item);
-                    } else if (!bean.isEnablePing()) {
-                        for (int i = 0; i < getItemCount(); i++) {
-                            ResultBean item1 = list.get(i);
-                            if (item1.getParam() instanceof DiagnoseBean) {
-                                DiagnoseBean bean1 = (DiagnoseBean) item1.getParam();
-                                if (!bean1.isEnablePing()) {
-                                    list.add(i, item);
-                                }
-                            }
-                        }
-                    } else if (!bean.isConnectedUrl()) {
-                        for (int i = 0; i < getItemCount(); i++) {
-                            ResultBean item1 = list.get(i);
-                            if (item1.getParam() instanceof DiagnoseBean) {
-                                DiagnoseBean bean1 = (DiagnoseBean) item1.getParam();
-                                if (!bean1.isConnectedUrl()) {
-                                    list.add(i, item);
-                                }
-                            }
-                        }
-                    } else if (!bean.isConnectedUrlActuatorHealth()) {
-                        for (int i = 0; i < getItemCount(); i++) {
-                            ResultBean item1 = list.get(i);
-                            if (item1.getParam() instanceof DiagnoseBean) {
-                                DiagnoseBean bean1 = (DiagnoseBean) item1.getParam();
-                                if (!bean1.isConnectedUrlActuatorHealth()) {
-                                    list.add(i, item);
-                                }
-                            }
-                        }
-                    } else {
-                        list.add(item);
-                    }
-                } else {
-                    list.add(item);
-                }
-            } else {
-                list.add(item);
-            }
-        }
-
+    public void insertData(DiagnoseResponse item) {
+        list.clear();
+        list.add(item);
         notifyDataSetChanged();
-
     }
 
     @Override
-    public void insertData(ResultBean item, int position) {
-        for (ResultBean bean : list) {
-            if (bean.getTitle().equals(item.getTitle())) {
-                list.remove(bean);
-                break;
-            }
-        }
-        list.add(position, item);
-        notifyItemInserted(position);
-    }
-
-    @Override
-    public void convert(BaseRecyclerHolder baseRecyclerHolder, ResultBean item, int position) {
-        baseRecyclerHolder.setText(R.id.item_activity_result_rv_tv, (position + 1) + "  " + item.getTitle());
-        baseRecyclerHolder.setText(R.id.item_activity_result_rv_tv_param, formatString(item.getParam().toString()));
+    public void convert(BaseRecyclerHolder baseRecyclerHolder, DiagnoseResponse item, int position) {
+//        baseRecyclerHolder.setText(R.id.item_activity_result_rv_tv, (position + 1) );
+        baseRecyclerHolder.setText(R.id.item_activity_result_rv_tv_param, formatString(new Gson().toJson(item)));
     }
 
     public static String formatString(String text) {
-
         StringBuilder json = new StringBuilder();
         String indentString = "";
 

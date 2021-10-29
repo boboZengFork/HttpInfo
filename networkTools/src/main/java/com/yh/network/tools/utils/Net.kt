@@ -1,9 +1,18 @@
 package com.yh.network.tools.utils
 
 import android.content.Context
-import android.net.ConnectivityManager
+import android.net.*
+import android.net.wifi.WifiManager
+import android.os.Build
 import android.telephony.TelephonyManager
 import androidx.annotation.RequiresPermission
+import java.io.IOException
+import java.io.InputStreamReader
+import java.io.LineNumberReader
+import java.net.Inet4Address
+import java.net.InetAddress
+import java.net.NetworkInterface
+import java.util.*
 
 /**
  * @description $
@@ -51,4 +60,32 @@ object Net {
             else -> "Other"
         }
     }
+
+    /**
+     * 本地IP
+     *
+     * @return
+     */
+    fun getClientIp(): String? {
+        val localIp = ""
+        try {
+            val localEnumeration: Enumeration<*>? = NetworkInterface.getNetworkInterfaces()
+            if (localEnumeration != null) {
+                while (localEnumeration.hasMoreElements()) {
+                    val localEnumerationNew: Enumeration<*> =
+                        (localEnumeration.nextElement() as NetworkInterface).inetAddresses
+                    while (localEnumerationNew.hasMoreElements()) {
+                        val inetAddress = localEnumerationNew.nextElement() as InetAddress
+                        if (!inetAddress.isLoopbackAddress && inetAddress is Inet4Address && !inetAddress.isLinkLocalAddress()) {
+                            return inetAddress.getHostAddress()
+                        }
+                    }
+                }
+            }
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+        return localIp
+    }
+
 }
