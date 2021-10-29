@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 数据返回类
+ * 结果数据类
  * @date: 2021/10/28 4:32 下午
  * @author: zengbobo
  */

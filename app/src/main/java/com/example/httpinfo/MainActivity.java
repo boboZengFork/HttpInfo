@@ -49,20 +49,20 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(getApplicationContext(), DiagnoseActivity.class);
-//                intent.putExtra(HTTP_ADDRESS, etInput.getText().toString());
-//                intent.putExtra(HTTP_RB, radioButton.isChecked());
-//                startActivity(intent);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    String pingResponse = Ping.INSTANCE.ping(Ping.INSTANCE.createSimplePingCommand(10, 50, "sit.productcenter.sitgw.yonghui.cn"));
-                    Log.i("zengbobo"," pingResponse1="+pingResponse);
-
-                    String pingResponse1 = Ping.INSTANCE.ping(Ping.INSTANCE.createSimplePingCommand(10, 50, "www.baidu.com"));
-                    Log.i("zengbobo"," pingResponse2="+pingResponse1);
-                }
-            }).start();
+                Intent intent = new Intent(getApplicationContext(), DiagnoseActivity.class);
+                intent.putExtra(HTTP_ADDRESS, etInput.getText().toString());
+                intent.putExtra(HTTP_RB, radioButton.isChecked());
+                startActivity(intent);
+//            new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    String pingResponse = Ping.INSTANCE.ping(Ping.INSTANCE.createSimplePingCommand(10, 50, "sit.productcenter.sitgw.yonghui.cn"));
+//                    Log.i("zengbobo"," pingResponse1="+pingResponse);
+//
+//                    String pingResponse1 = Ping.INSTANCE.ping(Ping.INSTANCE.createSimplePingCommand(10, 50, "www.baidu.com"));
+//                    Log.i("zengbobo"," pingResponse2="+pingResponse1);
+//                }
+//            }).start();
 
 
             }
