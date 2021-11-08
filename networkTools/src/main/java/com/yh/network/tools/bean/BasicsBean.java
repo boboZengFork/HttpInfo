@@ -1,5 +1,8 @@
 package com.yh.network.tools.bean;
 
+import java.lang.reflect.Array;
+import java.util.List;
+
 /**
  *
  * 本机网络基本信息实体类
@@ -36,7 +39,7 @@ public class BasicsBean extends BaseBean{
     /**
      * 本地dns
      */
-    private String localDns;
+    private String[] localDns;
 
 
     public boolean isConnectedNet() {
@@ -87,11 +90,11 @@ public class BasicsBean extends BaseBean{
         this.localIp = localIp;
     }
 
-    public String getLocalDns() {
+    public String[] getLocalDns() {
         return localDns;
     }
 
-    public void setLocalDns(String localDns) {
+    public void setLocalDns(String[] localDns) {
         this.localDns = localDns;
     }
 }

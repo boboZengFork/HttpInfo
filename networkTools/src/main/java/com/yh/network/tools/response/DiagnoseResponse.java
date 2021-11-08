@@ -27,7 +27,7 @@ public class DiagnoseResponse {
     /**
      * 本地dns
      */
-    private DiagnoseBean localDns;
+    private List<DiagnoseBean> localDns;
     /**
      * 指定参照服务器：如www.baidu.com
      */
@@ -61,11 +61,11 @@ public class DiagnoseResponse {
         this.localIp = localIp;
     }
 
-    public DiagnoseBean getLocalDns() {
+    public List<DiagnoseBean> getLocalDns() {
         return localDns;
     }
 
-    public void setLocalDns(DiagnoseBean localDns) {
+    public void setLocalDns(List<DiagnoseBean> localDns) {
         this.localDns = localDns;
     }
 

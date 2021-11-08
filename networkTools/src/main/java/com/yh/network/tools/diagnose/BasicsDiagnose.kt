@@ -54,7 +54,7 @@ class BasicsDiagnose private constructor(context: Context) : BaseDiagnose(contex
 
                     //dns
                     localIp = Net.getClientIp()
-                    localDns = Dns.readDnsServers(context)?.get(0)
+                    localDns = Dns.readDnsServers(context)
                 }
                 //127.0.0.1
                 localHost = DiagnoseBean().apply {
@@ -90,21 +90,25 @@ class BasicsDiagnose private constructor(context: Context) : BaseDiagnose(contex
                     }
                 }
 
+                localDns = arrayListOf()
                 //本地dns
-                localDns = DiagnoseBean().apply {
-                    address = basics.localDns
-                    val pingResponse = Ping.ping(Ping.createSimplePingCommand(20, 50, address))
-                    pingBean = PingBean().apply {
-                        if (!TextUtils.isEmpty(pingResponse)) {
-                            this.isEnablePing = true
-                            this.pingIp = Ping.parseIpFromPing(pingResponse!!)
-                            Ping.parseLossFromPing(pingResponse, this)
-                            Ping.parseDelayFromPing(pingResponse, this)
-                            Ping.parseTtlFromPing(pingResponse, this)
-                        } else {
-                            this.isEnablePing = false
+                basics.localDns?.forEach {
+                  var localDnsDiagnoseBean = DiagnoseBean().apply {
+                        address = it
+                        val pingResponse = Ping.ping(Ping.createSimplePingCommand(20, 50, address))
+                        pingBean = PingBean().apply {
+                            if (!TextUtils.isEmpty(pingResponse)) {
+                                this.isEnablePing = true
+                                this.pingIp = Ping.parseIpFromPing(pingResponse!!)
+                                Ping.parseLossFromPing(pingResponse, this)
+                                Ping.parseDelayFromPing(pingResponse, this)
+                                Ping.parseTtlFromPing(pingResponse, this)
+                            } else {
+                                this.isEnablePing = false
+                            }
                         }
                     }
+                    response.localDns?.add(localDnsDiagnoseBean)
                 }
             }
             listener?.end(address, response)
